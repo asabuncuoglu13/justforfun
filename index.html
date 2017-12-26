@@ -19,16 +19,20 @@
 
 <script>
 function title_generator() {
-    var pre = ["Through", "Beyond"];
-    var post = ["Beyond the Art of", "Speculative Design for"];
+    var pre = ["Through", "Beyond", "Beyond the Art of", "Behind"];
+    var post = ["Materialising Movement of", "Speculative Design for", "Using Expressive Ideas  on", "Adapting Motion to"];
     var keywordstring = document.getElementById("keyword_form").elements["keywords"].value;
     var keywords = keywordstring.split(',');
     var rand1 = Math.floor(Math.random() * 2);
-    var rand2 = Math.floor(Math.random() * 2);
-    document.getElementById("result").innerHTML = pre[rand1] + " " + keywords[rand2] + ": " + post[rand2] + " " + keywords [rand1];
+    var rand2 = 0;
+    var rand3 = Math.floor(Math.random() * 4);
+    if (rand1 == 0)
+    { rand2 = 1; }
+    document.getElementById("result").innerHTML = pre[rand3] + " " + keywords[rand1] + ": " + post[rand3] + " " + keywords [rand2];
 }
 
 </script>
 
 </body>
 </html>
+
