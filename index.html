@@ -2,37 +2,8 @@
 <html>
 <body>
 
-<img src="title.png" width="600" height="300">
-    
-<p>Welcome to Paper Name Generator</p>
-<p>Put two keywords to build a title.</p>
-
-<form id="keyword_form">
-  Keywords: <input type="text" name="keywords" value="Leblebi, Çorum"><br>
-</form> 
-
-<p>Click the "Try it" button to display the title of your paper.</p>
-
-<button onclick="title_generator()">Try it</button>
-
-<p id="result"></p>
-
-<script>
-function title_generator() {
-    var pre = ["Through", "Beyond", "Beyond the Art of", "Behind"];
-    var post = ["Materialising Movement of", "Speculative Design for", "Using Expressive Ideas  on", "Adapting Motion to"];
-    var keywordstring = document.getElementById("keyword_form").elements["keywords"].value;
-    var keywords = keywordstring.split(',');
-    var rand1 = Math.floor(Math.random() * 2);
-    var rand2 = 0;
-    var rand3 = Math.floor(Math.random() * 4);
-    if (rand1 == 0)
-    { rand2 = 1; }
-    document.getElementById("result").innerHTML = pre[rand3] + " " + keywords[rand1] + ": " + post[rand3] + " " + keywords [rand2];
-}
-
-</script>
+<p><a href="./paper_title_generator/index.html">Go to Paper Title Generator</a></p>
+<p><a href="./stock_photo_presentation/index.html">Go to Stock Photo Presentation</a></p>
 
 </body>
 </html>
-

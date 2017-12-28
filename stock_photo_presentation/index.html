@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Example Domain</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        button {
+            text-decoration: none;
+            display: inline-block;
+            padding: 8px 16px;
+        }
+
+        button:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .previous {
+            background-color: #f1f1f1;
+            color: black;
+        }
+
+        .next {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .round {
+            border-radius: 50%;
+        }
+    </style>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+    <!-- Put the following javascript before the closing  tag. -->
+</head>
+
+<body>
+
+    <div id="test"></div>
+
+
+    <img src="title.png" width="600" height="300">
+
+    <p>Welcome to Stock Photo Slide Show Generator</p>
+    <p>Put three keywords to build a slideshow.</p>
+
+    <form id="keyword_form">
+        Title:
+        <input type="text" name="title" value="Çorum: Leblebinin Pavyonu">
+        <br> Keywords:
+        <input type="text" name="keywords" value="Nohut, Leblebi, Pavyon, Çorum, Türkiye">
+        <br>
+
+    </form>
+
+    <p>Click the "Try it" button to display the slide show.</p>
+
+    <button onclick="slideshow_generator()">Try it</button>
+
+    <h1 id="title"></h1>
+    <img id="image1" src="" width="500" height="400">
+    <br />
+    <button onclick="image_generator()" class="previous round">&#8249;</button>
+    <button onclick="image_generator()" class="next round">&#8250;</button>
+
+    <script type="text/javascript" charset="utf-8">
+
+        var keywords;
+
+        function keyword_extractor() {
+            var keywordstring = document.getElementById("keyword_form").elements["keywords"].value;
+            keywords = keywordstring.split(',');
+        }
+
+        function image_generator() {
+            var rand = Math.floor(Math.random() * 5);
+            var startIndex = '1';
+            var KEY = 'AIzaSyBPoj6o1YmKi1ar6eI78omThJ6cpAUYm0I';
+            var CX = '007548910499588559159:lepkrgs8oig';
+            var count = '5';
+            for (k in keywords) {
+                var searchTerm = keywords[rand];
+                var url = "https://www.googleapis.com/customsearch/v1?q=" + searchTerm + "&num=" + count + "&start=" + startIndex + "&key=" + KEY + "&cx=" + CX + "&searchType=image";
+                console.log(url)
+                $.getJSON(url, function (data) {
+                    console.log(data)
+                    for (item in data.items) {
+                        console.log(data.items[item].link)
+                        if(rand == item)
+                        {
+                            document.getElementById("image1").src = data.items[item].link;
+                        }
+                    }
+                });
+            }
+
+        }
+
+        function slideshow_generator() {
+            document.getElementById("title").innerHTML = document.getElementById("keyword_form").elements["title"].value;;
+            keyword_extractor();
+            image_generator();
+        }
+
+    </script>
+
+</body>
+
+</html>
