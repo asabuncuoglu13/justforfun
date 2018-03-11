@@ -1,0 +1,33 @@
+<head>
+  <!--
+Ejercicio con alumnos de Arte digital - Ibero
+AR.js by @jerome_etienne - github: https://github.com/jeromeetienne/ar.js - info: https://medium.com/arjs/augmented-reality-in-10-lines-of-html-4e193ea9fdbf
+https://codepen.io/AndraConnect/#
+-->
+  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/aframe/examples/vendor/aframe/build/aframe.min.js"></script>
+  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/aframe/build/aframe-ar.js"></script>
+  <title>IBERO AR</title>
+</head>
+
+<body style='margin: 0px; overflow: hidden;'>
+  <a-scene embedded arjs='sourceType: webcam;'>
+    <a-marker preset='hiro'>
+      <!-- Abre etiqueta a-marker -->
+      <!-- Aquí van los elementos de nuestra AR -->
+      <a-box color="#000000" opacity="0.2" position="0 0 -0.5" transparent="true" height="2" width="0.5" depth="1">
+        <a-animation attribute="rotation" dur="3000" to="180 0 0" repeat="indefinite" easing="linear" direction="alternate">
+        </a-animation>
+        <a-animation attribute="opacity" dur="2000" to="1" repeat="indefinite" easing="linear">
+        </a-animation>
+      </a-box>
+      <a-sphere src="https://raw.githubusercontent.com/aframevr/sample-assets/master/assets/images/space/earth_atmos_4096.jpg"
+        segments-height="84">
+      </a-sphere>
+      <a-text value="¡Hola mundo!" color="#984382" rotation="-90 0 0" position="0.3 0 0">
+
+      </a-text>
+    </a-marker>
+    <!-- Cierra etiqueta a-marker -->
+    <a-entity camera></a-entity>
+  </a-scene>
+</body>

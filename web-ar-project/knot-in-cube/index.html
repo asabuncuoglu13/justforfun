@@ -1,0 +1,147 @@
+<!-- You need to use webcamera and hiro marker to check this. Place the marker in front of your camera (about 30cm)
+
+hiro marker: https://jeromeetienne.github.io/AR.js/data/images/HIRO.jpg
+  -->
+  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.1/aframe/examples/vendor/aframe/build/aframe.min.js"></script>
+  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.1/aframe/build/aframe-ar.js"></script>
+  
+  
+  <body style="margin : 0; overflow: hidden; font-family: Monospace;">
+  <script>
+    'use strict';
+  
+    var renderer, scene, camera;
+    var arToolkitSource;
+    var arToolkitContext;
+    var markerControls;
+    var lastTimeMsec = null;
+    var geometry, material, mesh;
+  
+    function init() {
+      renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true
+      });
+  
+      renderer.setClearColor(new THREE.Color('lightgrey'), 0);
+      renderer.setSize(640, 480);
+      renderer.domElement.style.position = 'absolute';
+      renderer.domElement.style.top = '0px';
+      renderer.domElement.style.left = '0px';
+  
+      document.body.appendChild(renderer.domElement);
+  
+      scene = new THREE.Scene();
+      camera = new THREE.Camera();
+      scene.add(camera);
+  
+      initArToolKitSource();
+      initArToolkitContext();
+      initMarker();
+  
+      fillScene();
+  
+      window.addEventListener('resize', function () {
+        onResize();
+      });
+    }
+  
+    function initArToolKitSource() {
+      arToolkitSource = new THREEx.ArToolkitSource({
+        sourceType: 'webcam'
+      });
+  
+      arToolkitSource.init(function onReady() {
+        onResize();
+      });
+    }
+  
+  
+    function onResize() {
+      arToolkitSource.onResize();
+      arToolkitSource.copySizeTo(renderer.domElement);
+  
+      if (arToolkitContext.arController !== null) {
+        arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)
+      }
+    }
+  
+    function initArToolkitContext() {
+      arToolkitContext = new THREEx.ArToolkitContext({
+        cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
+        detectionMode: 'mono'
+      });
+  
+      arToolkitContext.init(function onCompleted() {
+        camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
+      });
+    }
+  
+    function initMarker() {
+      markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
+        type: 'pattern',
+        patternUrl: THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+        // patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
+        // as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
+        changeMatrixMode: 'cameraTransformMatrix'
+      });
+  
+    }
+  
+    function fillScene() {
+      scene.visible = false;
+  
+      geometry = new THREE.CubeGeometry(1, 1, 1);
+      material = new THREE.MeshNormalMaterial({
+        transparent: true,
+        opacity: 0.5,
+        side: THREE.DoubleSide
+      });
+      mesh = new THREE.Mesh(geometry, material);
+      mesh.position.y = geometry.parameters.height / 2;
+      scene.add(mesh);
+  
+      geometry = new THREE.TorusKnotGeometry(0.3, 0.1, 64, 16);
+      material = new THREE.MeshNormalMaterial();
+      mesh = new THREE.Mesh(geometry, material);
+      mesh.position.y = 0.5;
+      scene.add(mesh);
+    }
+  
+  
+    function animate() {
+      window.requestAnimationFrame(animate);
+      render();
+    }
+  
+    function render() {
+      var nowMsec = Date.now() * 0.4;
+      lastTimeMsec = lastTimeMsec || nowMsec - 1000 / 60;
+      var deltaMsec = Math.min(200, nowMsec - lastTimeMsec) / 1000;
+      lastTimeMsec = nowMsec;
+  
+      // call each update function
+  
+      if (arToolkitSource.ready === false) {
+        return;
+      }
+  
+      arToolkitContext.update(arToolkitSource.domElement);
+  
+      // update scene.visible if the marker is seen
+      scene.visible = camera.visible;
+  
+      mesh.rotation.x += Math.PI * deltaMsec;
+  
+      renderer.render(scene, camera);
+    }
+  
+    try {
+      init();
+      animate();
+    } catch (e) {
+      var errorReport = "Your program encountered an unrecoverable error, can not draw on canvas. Error was:<br/><br/>";
+      console.log(errorReport + e);
+    }
+  </script>
+  </body>

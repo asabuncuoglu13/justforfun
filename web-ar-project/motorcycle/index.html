@@ -1,0 +1,20 @@
+<!-- AR.js by @jerome_etienne - github: https://github.com/jeromeetienne/ar.js - info: https://medium.com/arjs/augmented-reality-in-10-lines-of-html-4e193ea9fdbf -->
+<script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
+
+<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/aframe/build/aframe-ar.js"></script>
+<body style='margin : 0px; overflow: hidden;'>
+	<a-scene embedded arjs='trackingMethod: best;'>
+      <a-anchor hit-testing-enabled='false'>
+   		<!-- ADD ENTITY HERE-->
+  
+        <a-entity position="0 0 0" scale="0.5 0.5 0.5" 
+obj-model="obj: url(https://raw.githubusercontent.com/vinnytortorella/robot/master/bike.obj); 
+mtl: url(https://raw.githubusercontent.com/vinnytortorella/robot/master/bike.mtl)">
+<a-animation attribute="scale" to="2 2 2" dur="4000" fill="forwards" repeat="indefinite" ></a-animation>
+</a-entity>
+
+      </a-entity>
+      </a-anchor>
+		<a-camera-static/>
+	</a-scene>
+</body>
